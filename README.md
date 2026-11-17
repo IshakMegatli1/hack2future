@@ -1,6 +1,6 @@
 # Chrome & Oak Action Center
 
-**A sales and finance dashboard that watches the data, flags the situations that cost money, and drafts the fix for the person who can act on it.**
+A sales and finance dashboard that watches data, flags the situations that cost money, and drafts the fix.
 
 Built in 4 hours by a team of 2 for the Business Track (Option B: Sales & Finance) at Hack 2 the Future 2026.
 
