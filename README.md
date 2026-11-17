@@ -2,7 +2,7 @@
 
 **A sales and finance dashboard that watches the data, flags the situations that cost money, and drafts the fix for the person who can act on it.**
 
-Built in 4 hours by a team of 2 for the **Business Track (Option B: Sales & Finance)** at **Hack 2 the Future 2026**.
+Built in 4 hours by a team of 2 for the Business Track (Option B: Sales & Finance) at Hack 2 the Future 2026.
 
 <p align="center">
   <img src="docs/screenshot.png" alt="Chrome & Oak Action Center: key figures and the most serious alerts" width="900">
@@ -40,15 +40,15 @@ On paper, Chrome & Oak Office Supply has never looked better: revenue is up 33% 
 | Operations | "Returns are eating my warehouse team's time, especially the big items." | One product, the ErgoLift Standing Desk, is behind 79 of 103 damaged-in-transit returns. |
 | Customer Success | "Long-time business customers have gone quiet." | Regular customers who received a damaged delivery are about 3x more likely to stop ordering. |
 
-We chose to solve **damage in transit** first. It is concentrated, measurable, and fixable by one team, and it shows up in refunds, warehouse workload, and lost customers all at once.
+We chose to solve damage in transit first. It is concentrated, measurable, and fixable by one team, and it shows up in refunds, warehouse workload, and lost customers all at once.
 
 ## What we found
 
-1. **Revenue is growing faster than profit.** Jan to Sep 2026 vs 2025: revenue +33%, margin +21%.
-2. **One rep drives the margin gap.** R07 (Atlantic) is the top seller at $1.98M but discounts 23% on average, while every other rep sits at 8 to 11%. R07's margin is 16%, against 31 to 34% for the rest. All 40 loss-making orders belong to R07, and all 46 "Overstock / ordered in error" returns ($150K) trace back to R07 reseller orders.
-3. **Damage is a desk problem in two regions.** ErgoLift Standing Desks are damaged in about 31% of BC orders and 30% of Prairies orders, against 5 to 9% in Ontario, Quebec, and Atlantic. Desks account for $248K of the $269K refunded for transit damage.
-4. **Damage costs customers, not just refunds.** Among business customers with 5+ orders, 34% of those who received a damaged delivery have gone 90+ days without ordering, against 10% of those who didn't. This is a strong association, not proof of cause.
-5. **Chasing invoices is a time problem.** 92 business invoices ($250K) are unpaid and 54 are overdue ($135K). Pursuing these by hand is slow, so the app drafts a reminder for every invoice that is due soon or overdue, and opens it in Outlook with one click.
+1. Revenue is growing faster than profit. Jan to Sep 2026 vs 2025: revenue +33%, margin +21%.
+2. One rep drives the margin gap. R07 (Atlantic) is the top seller at $1.98M but discounts 23% on average, while every other rep sits at 8 to 11%. R07's margin is 16%, against 31 to 34% for the rest. All 40 loss-making orders belong to R07, and all 46 "Overstock / ordered in error" returns ($150K) trace back to R07 reseller orders.
+3. Damage is a desk problem in two regions. ErgoLift Standing Desks are damaged in about 31% of BC orders and 30% of Prairies orders, against 5 to 9% in Ontario, Quebec, and Atlantic. Desks account for $248K of the $269K refunded for transit damage.
+4. Damage costs customers, not just refunds. Among business customers with 5+ orders, 34% of those who received a damaged delivery have gone 90+ days without ordering, against 10% of those who didn't. This is a strong association, not proof of cause.
+5. Chasing invoices is a time problem. 92 business invoices ($250K) are unpaid and 54 are overdue ($135K). Pursuing these by hand is slow, so the app drafts a reminder for every invoice that is due soon or overdue, and opens it in Outlook with one click.
 
 ## What the app does
 
@@ -114,11 +114,9 @@ Requires Python 3.10+. Built with `pandas`, `plotly`, and `streamlit`. `orders_c
 python -m streamlit run app.py
 ```
 
-If `python` isn't recognized either, try `py -m streamlit run app.py`.
-
 ## The data
 
-Three raw files from Chrome & Oak's systems (Jan 2025 to Sep 2026, extracted 31 Oct 2026) were cleaned and joined into `orders_clean.csv`: **6,136 orders, one per row.** The full column dictionary is in [DATA.md](DATA.md).
+Three raw files from Chrome & Oak's systems (Jan 2025 to Sep 2026, extracted 31 Oct 2026) were cleaned and joined into `orders_clean.csv`. The full column dictionary is in [DATA.md](DATA.md).
 
 | Issue in raw data | Fix |
 |---|---|
@@ -131,11 +129,9 @@ Three raw files from Chrome & Oak's systems (Jan 2025 to Sep 2026, extracted 31 
 
 Added columns include `revenue`, `cost`, `margin`, `due_date`, `is_unpaid`, `days_late`, `days_overdue`, `quarter`, and `days_to_quarter_end`.
 
-**Why it matters:** our first pass at date handling silently dropped 122 orders, and the percentage discounts produced negative revenue, so every total would have been wrong. Cleaning changed the numbers, not just the tidiness.
-
 ## Assumptions and limits
 
-- Revenue is **gross**; refunds are subtracted separately.
+- Revenue is gross; refunds are subtracted separately.
 - The 122 non-ISO dates were read as month-first. The samples we checked had days above 12, but we did not verify every one.
 - Any discount above 1 was treated as a percentage.
 - The "as of" date is the end of the period slider and defaults to the latest order in the data. Invoices still open on that day count as unpaid, even if ordered before the period start.
@@ -147,13 +143,13 @@ Added columns include `revenue`, `cost`, `margin`, `due_date`, `is_unpaid`, `day
 
 ## What we'd build next
 
-The code is organised as a registry of detections and automations, and several are already named and wired in as empty "slots" waiting for a rule:
+The code is organised as a registry of detections and automations, and several are already named and wired in as empty slots waiting for a rule:
 
-- **Discount Gate:** flag any business order with a discount above 25%, and hold it for manager approval.
-- **Quarter-End Loading Check:** flag discounted reseller orders in the last week of a quarter.
-- **Quiet Customer Alarm:** flag regular customers silent for 3x their usual gap, and create a win-back task for Customer Success.
-- **Chronic Late Payer Flag:** flag customers who are late on almost every invoice.
-- **Carrier Review Ticket:** open a ticket for Operations listing the damaged orders on a flagged route.
+- Discount Gate: flag any business order with a discount above 25%, and hold it for manager approval.
+- Quarter-End Loading Check: flag discounted reseller orders in the last week of a quarter.
+- Quiet Customer Alarm: flag regular customers silent for 3x their usual gap, and create a win-back task for Customer Success.
+- Chronic Late Payer Flag: flag customers who are late on almost every invoice.
+- Carrier Review Ticket: open a ticket for Operations listing the damaged orders on a flagged route.
 
 To add one, fill in its function in `app.py` and change its status to `active` in the registry.
 
